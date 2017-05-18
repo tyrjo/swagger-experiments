@@ -10,11 +10,15 @@ describe("swagger test", ()=> {
     let parser;
     const swaggerFile = 'src/swagger.yaml';
     let swagger;
+    let api;
+
     before(()=> {
         parser = new SwaggerParser();
         return parser.dereference(swaggerFile)
-            .then((api)=> {
-                swagger = api;
+            .then((derefedSwagger)=> {
+                swagger = derefedSwagger;
+                api = hippie(swagger)
+                    .base("http://localhost:8000");
             })
     });
 
@@ -27,25 +31,53 @@ describe("swagger test", ()=> {
         return expect(promise).to.be.fullfilled;
     });
 
-    it("dereferences", ()=> {
-        return expect(
-            parser.dereference(swaggerFile)
-        ).to.be.fullfilled;
-    });
-
-    it("missing path fails", ()=> {
+    it("GET /pets", ()=> {
         return expect(
             hippie(swagger)
-                .get('/snarf')
+                .base('http://localhost:8000')
+                .get('/pets')
+                .expectStatusCode(200)
                 .end()
-        ).to.be.rejectedWith('Swagger spec does not define path: /snarf');
+        ).to.be.fulfilled;
     });
 
-    it("missing option fails", ()=> {
+    it("POST /pets", ()=> {
         return expect(
             hippie(swagger)
-                .get('/pet')
+                .base('http://localhost:8000')
+                .post('/pets')
+                .send({
+                    name: 'Neko',
+                    type: 'cat'
+                })
+                .expectStatusCode(201)
                 .end()
-        ).to.be.rejectedWith('Swagger spec does not define path: /pet');
-    })
+        ).to.be.fulfilled;
+    });
+
+    it("GET /pets/Neko", ()=> {
+        return expect(
+            hippie(swagger)
+                .base('http://localhost:8000')
+                .get('/pets/{petName}')
+                .pathParams({
+                    petName: 'Neko'
+                })
+                .expectStatusCode(200)
+                .end()
+        ).to.be.fulfilled;
+    });
+
+    it("DELETE /pets/Neko", ()=> {
+        return expect(
+            hippie(swagger)
+                .base('http://localhost:8000')
+                .del('/pets/{petName}')
+                .pathParams({
+                    petName: 'Neko'
+                })
+                .expectStatusCode(200)
+                .end()
+        ).to.be.fulfilled;
+    });
 });

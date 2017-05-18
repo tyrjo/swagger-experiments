@@ -147,7 +147,7 @@ paths:
           required: false
           type: integer
       responses:
-        default:
+        200:
           description: Returns the matching pets
           schema:
             type: array
@@ -163,7 +163,7 @@ paths:
       operationId: deletePets
       parameters: *petFilters
       responses:
-        default:
+        200:
           description: Returns the pets that were deleted
           schema:
             type: array
@@ -198,7 +198,7 @@ paths:
       description: Returns a pet by name
       operationId: findPetByName
       responses:
-        default:
+        200:
           description: Returns the pet data
           schema:
             $ref: "#/definitions/pet"
@@ -211,7 +211,7 @@ paths:
       description: Deletes a single pet based on the name supplied
       operationId: deletePet
       responses:
-        default:
+        200:
           description: Returns the pet that was deleted
           schema:
             $ref: "#/definitions/pet"
