@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --opts ./.mocharc src/**/*test.js"
+    "test": "./node_modules/.bin/mocha --opts ./.mocharc src/**/*test.js",
+    "start": "node src/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "babel-register": "^6.24.1",
     "chai-as-promised": "^6.0.0",
     "hippie-swagger": "^2.1.0",
-    "swagger-parser": "^3.4.1"
+    "swagger-parser": "^3.4.1",
+    "swagger-server": "^1.0.0-alpha.18"
   }
 }
